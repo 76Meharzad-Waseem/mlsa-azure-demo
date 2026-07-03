@@ -1,7 +1,4 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy Node.js app to Azure Web App - msa-demo-77
+name: Deploy to Azure Web App
 
 on:
   push:
@@ -13,26 +10,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.x'
-
-      - name: npm install and build
-        run: |
-          npm install
-          npm run build --if-present
-
-      - name: Zip artifact for deployment
-        run: zip -r release.zip . -x "node_modules/*"
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: release.zip
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
@@ -46,9 +31,6 @@ jobs:
         with:
           name: node-app
 
-      - name: Unzip artifact
-        run: unzip release.zip
-
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -61,4 +43,4 @@ jobs:
         with:
           app-name: 'msa-demo-77'
           slot-name: 'Production'
-          package: build
+          package: .
