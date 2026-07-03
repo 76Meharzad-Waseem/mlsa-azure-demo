@@ -61,5 +61,5 @@ jobs:
         with:
           app-name: 'msa-demo-77'
           slot-name: 'Production'
-          package: .
+          package: build
           
